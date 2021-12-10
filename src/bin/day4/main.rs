@@ -127,15 +127,14 @@ impl Board {
             return true;
         }
 
-        let winning_col = (0..BOARD_WIDTH).any(|col| {
+        // Check for winning col
+        (0..BOARD_WIDTH).any(|col| {
             (col..)
                 .step_by(BOARD_WIDTH)
                 .take(5)
                 .map(|idx| self.drawn[idx])
                 .all(|x| x)
-        });
-
-        winning_col
+        })
     }
 
     fn score(&self, last_drawn: u32) -> u64 {

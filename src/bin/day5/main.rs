@@ -40,7 +40,7 @@ struct Grid {
 }
 
 impl Grid {
-    fn from(lines: &Vec<Line>) -> Option<Self> {
+    fn from(lines: &[Line]) -> Option<Self> {
         let left = lines.iter().flat_map(|x| [x.x1, x.x2]).min()?;
         let right = lines.iter().flat_map(|x| [x.x1, x.x2]).max()?;
         let top = lines.iter().flat_map(|x| [x.y1, x.y2]).min()?;
@@ -175,7 +175,7 @@ fn parse_point(point: &str) -> Option<(u32, u32)> {
 fn parse_lines(lines: impl BufRead) -> Option<Vec<Line>> {
     lines
         .lines()
-        .map(|l| Some(Line::parse(&l.ok()?)?))
+        .map(|l| Line::parse(&l.ok()?))
         .collect::<Option<Vec<_>>>()
 }
 
