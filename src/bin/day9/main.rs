@@ -116,8 +116,6 @@ impl Basins {
             basin_id += 1;
         }
 
-        debug_assert_eq!(self.unvisited.len(), 0);
-
         let result = BasinsResult {
             basin_sizes: self.basin_sizes,
         };
@@ -193,14 +191,14 @@ mod tests {
             assert_eq!(&low, &[((1, 0), 1), ((9, 0), 0), ((2, 2), 5), ((6, 4), 5)]);
             assert_eq!(Map::total_risk_level(low.iter().copied()), 15);
         }
+    }
 
-        #[test]
-        fn basins() {
-            let map = Map::from_str(TEST_INPUT).unwrap();
-            let (_, result) = Basins::new(map).compute_basins();
-            let sizes: Vec<_> = result.basin_sizes().collect();
-            assert_eq!(sizes.len(), 4);
-            assert_eq!(largest_basins_product(sizes), 1134)
-        }
+    #[test]
+    fn basins() {
+        let map = Map::from_str(TEST_INPUT).unwrap();
+        let (_, result) = Basins::new(map).compute_basins();
+        let sizes: Vec<_> = result.basin_sizes().collect();
+        assert_eq!(sizes.len(), 4);
+        assert_eq!(largest_basins_product(sizes), 1134)
     }
 }
