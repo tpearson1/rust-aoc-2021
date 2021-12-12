@@ -32,6 +32,12 @@ pub struct LineChecker {
     stack: Vec<Symbol>,
 }
 
+impl Default for LineChecker {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl LineChecker {
     pub fn new() -> Self {
         Self {
@@ -72,7 +78,7 @@ impl LineChecker {
             }
         }
 
-        if self.stack.len() > 0 {
+        if !self.stack.is_empty() {
             let remaining: Vec<_> = self.stack.iter().rev().copied().collect();
             Err(Incomplete(remaining))
         } else {
