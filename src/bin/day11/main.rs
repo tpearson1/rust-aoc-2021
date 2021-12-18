@@ -155,7 +155,7 @@ impl Display for OctopusGrid {
             for x in 0..self.width {
                 write!(f, "{}", self.grid[((y * self.width) + x) as usize])?;
             }
-            write!(f, "\n")?;
+            writeln!(f)?;
         }
         Ok(())
     }

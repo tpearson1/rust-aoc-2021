@@ -7,7 +7,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let filename = "src/bin/day12/input.txt";
     let input = fs::read_to_string(filename).map_err(|_| "Could not read input contents")?;
 
-    let graph = CaveGraph::from_str(&input).ok_or("Failed to parse input as graph")?;
+    let graph = CaveGraph::parse_from_str(&input).ok_or("Failed to parse input as graph")?;
 
     let result = graph.traverse(false)?;
     println!("Path count (no second visits): {}", result);
@@ -50,7 +50,7 @@ pub struct CaveGraph {
 }
 
 impl CaveGraph {
-    pub fn from_str(input: &str) -> Option<CaveGraph> {
+    pub fn parse_from_str(input: &str) -> Option<CaveGraph> {
         let mut vertices: HashMap<&str, CaveId> = HashMap::new();
         let mut adjacency_list: HashMap<CaveId, Vec<Cave>> = HashMap::new();
 
@@ -119,10 +119,8 @@ impl CaveGraph {
         }
 
         let mut path_states: Vec<PathState> = Vec::new();
+        let mut stack = vec![(start, path_states.len())];
 
-        let mut stack = Vec::new();
-
-        stack.push((start, path_states.len()));
         path_states.push(PathState {
             allow_another_visit: allow_second_visit,
             visited_small_caves: HashSet::from([start]),
@@ -181,7 +179,7 @@ b-end";
 
     #[test]
     fn test_parse_input() {
-        let graph = CaveGraph::from_str(SIMPLE_INPUT).unwrap();
+        let graph = CaveGraph::parse_from_str(SIMPLE_INPUT).unwrap();
 
         let start = graph.cave_id("start").unwrap();
         let a = graph.cave_id("A").unwrap();
@@ -233,19 +231,19 @@ start-RW";
 
     #[test]
     fn test_traverse() {
-        let graph = CaveGraph::from_str(SIMPLE_INPUT).unwrap();
+        let graph = CaveGraph::parse_from_str(SIMPLE_INPUT).unwrap();
         let result = graph.traverse(false).unwrap();
         assert_eq!(result, 10);
         let result = graph.traverse(true).unwrap();
         assert_eq!(result, 36);
 
-        let graph = CaveGraph::from_str(MEDIUM_INPUT).unwrap();
+        let graph = CaveGraph::parse_from_str(MEDIUM_INPUT).unwrap();
         let result = graph.traverse(false).unwrap();
         assert_eq!(result, 19);
         let result = graph.traverse(true).unwrap();
         assert_eq!(result, 103);
 
-        let graph = CaveGraph::from_str(LARGE_INPUT).unwrap();
+        let graph = CaveGraph::parse_from_str(LARGE_INPUT).unwrap();
         let result = graph.traverse(false).unwrap();
         assert_eq!(result, 226);
         let result = graph.traverse(true).unwrap();
