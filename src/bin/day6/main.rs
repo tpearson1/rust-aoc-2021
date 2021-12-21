@@ -100,7 +100,7 @@ mod tests {
     use super::*;
 
     fn make_state(nums: &[u8]) -> Vec<Lanternfish> {
-        nums.iter().copied().map(|a| Lanternfish::from(a)).collect()
+        nums.iter().copied().map(Lanternfish::from).collect()
     }
 
     #[test]
